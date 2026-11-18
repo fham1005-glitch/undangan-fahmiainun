@@ -894,8 +894,43 @@
     }
 
     // Form RSVP & Ucapan
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzZ8Ex94-DAbV2r4BC1nVvFw2TLYUxCyCh8isOqBlJeXq1fN6aEp-R07fGcf7Aql8ll/exec";
+     const scriptURL = "https://script.google.com/macros/s/AKfycbzZ8Ex94-DAbV2r4BC1nVvFw2TLYUxCyCh8isOqBlJeXq1fN6aEp-R07fGcf7Aql8ll/exec";
 
+    // Fungsi Mengambil & Menampilkan Ucapan dari Google Sheets secara Otomatis
+    function muatUcapan() {
+      const container = document.getElementById('wishesContainer');
+      container.innerHTML = '<p style="font-size:12px; color:#888; text-align:center;">Memuat doa & ucapan...</p>';
+
+      fetch(scriptURL)
+        .then(res => res.json())
+        .then(response => {
+          if (response.status === "success" && response.data.length > 0) {
+            container.innerHTML = ''; // Bersihkan teks loading
+
+            response.data.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'wish-item';
+              div.innerHTML = `
+                <strong style="color: var(--black-pure); font-size: 13px;">${item.nama}</strong> 
+                <span style="font-size: 11px; color: ${String(item.status).includes('Hadir') ? '#15803d' : '#71717a'};">(${item.status})</span>
+                <p style="font-size: 12px; margin-top: 3px; color: var(--text-muted);">${item.ucapan}</p>
+              `;
+              container.appendChild(div);
+            });
+          } else {
+            container.innerHTML = '<p style="font-size:12px; color:#888; text-align:center;">Belum ada ucapan. Jadilah yang pertama mendoakan!</p>';
+          }
+        })
+        .catch(err => {
+          console.error("Gagal memuat:", err);
+          container.innerHTML = '<p style="font-size:12px; color:#888; text-align:center;">Doa restu tersimpan di sistem.</p>';
+        });
+    }
+
+    // Jalankan fungsi memuat ucapan saat halaman web dibuka
+    window.addEventListener('DOMContentLoaded', muatUcapan);
+
+    // Fungsi Saat Tamu Mengirim Ucapan Baru
     function handleRSVP(event) {
       event.preventDefault();
 
@@ -908,33 +943,22 @@
       const status = document.getElementById('rsvpStatus').value;
       const msg = document.getElementById('rsvpMessage').value;
 
-      // Siapkan data untuk dikirim ke Google Sheets
       const formData = new FormData();
       formData.append('name', name);
       formData.append('status', status);
       formData.append('message', msg);
 
-      // Kirim data ke Google Sheets
       fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
         .then(() => {
-          // 1. Tampilkan ucapan di website secara langsung
-          const container = document.getElementById('wishesContainer');
-          const item = document.createElement('div');
-          item.className = 'wish-item';
-          item.innerHTML = `
-            <strong style="color: var(--black-pure); font-size: 13px;">${name}</strong> 
-            <span style="font-size: 11px; color: ${status.includes('Hadir') ? '#15803d' : '#71717a'};">(${status})</span>
-            <p style="font-size: 12px; margin-top: 3px; color: var(--text-muted);">${msg}</p>
-          `;
-          container.prepend(item);
-
-          // 2. Beri tahu tamu bahwa data telah tersimpan
-          alert("Alhamdulillah, konfirmasi kehadiran dan doa Anda telah berhasil tersimpan!");
+          alert("Alhamdulillah, doa restu dan konfirmasi Anda berhasil tersimpan!");
           document.getElementById('rsvpMessage').value = '';
+          
+          // Tunggu 1.5 detik lalu muat ulang daftar ucapan agar ucapan baru langsung muncul
+          setTimeout(muatUcapan, 1500);
         })
         .catch(error => {
           console.error('Error:', error);
-          alert("Terjadi kendala saat mengirim. Silakan coba kembali.");
+          alert("Gagal mengirim ucapan, silakan periksa koneksi Anda.");
         })
         .finally(() => {
           btnSubmit.innerHTML = originalBtnText;
