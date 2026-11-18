@@ -894,24 +894,52 @@
     }
 
     // Form RSVP & Ucapan
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzZ8Ex94-DAbV2r4BC1nVvFw2TLYUxCyCh8isOqBlJeXq1fN6aEp-R07fGcf7Aql8ll/exec";
+
     function handleRSVP(event) {
       event.preventDefault();
+
+      const btnSubmit = event.target.querySelector('button[type="submit"]');
+      const originalBtnText = btnSubmit.innerHTML;
+      btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+      btnSubmit.disabled = true;
+
       const name = document.getElementById('rsvpName').value;
       const status = document.getElementById('rsvpStatus').value;
       const msg = document.getElementById('rsvpMessage').value;
 
-      const container = document.getElementById('wishesContainer');
-      const item = document.createElement('div');
-      item.className = 'wish-item';
-      item.innerHTML = `
-        <strong style="color: var(--lilac-dark); font-size: 13px;">${name}</strong> 
-        <span style="font-size: 11px; color: ${status.includes('Hadir') ? '#2e7d32' : '#888'};">(${status})</span>
-        <p style="font-size: 12px; margin-top: 3px; color: var(--text-muted);">${msg}</p>
-      `;
+      // Siapkan data untuk dikirim ke Google Sheets
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('status', status);
+      formData.append('message', msg);
 
-      container.prepend(item);
-      alert("Alhamdulillah, ucapan dan doa Anda telah berhasil terkirim!");
-      document.getElementById('rsvpMessage').value = '';
+      // Kirim data ke Google Sheets
+      fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+        .then(() => {
+          // 1. Tampilkan ucapan di website secara langsung
+          const container = document.getElementById('wishesContainer');
+          const item = document.createElement('div');
+          item.className = 'wish-item';
+          item.innerHTML = `
+            <strong style="color: var(--black-pure); font-size: 13px;">${name}</strong> 
+            <span style="font-size: 11px; color: ${status.includes('Hadir') ? '#15803d' : '#71717a'};">(${status})</span>
+            <p style="font-size: 12px; margin-top: 3px; color: var(--text-muted);">${msg}</p>
+          `;
+          container.prepend(item);
+
+          // 2. Beri tahu tamu bahwa data telah tersimpan
+          alert("Alhamdulillah, konfirmasi kehadiran dan doa Anda telah berhasil tersimpan!");
+          document.getElementById('rsvpMessage').value = '';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("Terjadi kendala saat mengirim. Silakan coba kembali.");
+        })
+        .finally(() => {
+          btnSubmit.innerHTML = originalBtnText;
+          btnSubmit.disabled = false;
+        });
     }
 
     // Animasi Muncul saat Layar Digulir (Scroll Reveal)
