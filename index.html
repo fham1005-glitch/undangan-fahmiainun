@@ -47,18 +47,20 @@
     /* ================= BACKGROUND TOILE VINTAGE LILAC ================= */
     /* Mengadopsi motif lukisan etching pohon/alam seperti contoh gambar tapi versi lilac */
        .mobile-container {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      background-color: #eedffa;
-      /* Etsa Sketsa Pohon & Botani Klasik Bergaris lilac Tegas */
-      background-image: 
-        linear-gradient(180deg, rgba(248, 242, 252, 0.82) 0%, rgba(238, 222, 250, 0.88) 100%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='%238f6aa8' fill-opacity='0.22'%3E%3Cpath d='M80 20c-8 12-24 20-35 20 10 10 12 28 0 38 18 2 30 16 35 32 5-16 17-30 35-32-12-10-10-28 0-38-11 0-27-8-35-20zM25 85c-5 8-15 13-22 13 6 6 8 18 0 24 11 1 19 10 22 20 3-10 11-19 22-20-8-6-6-18 0-24-7 0-17-5-22-13zm110 0c-5 8-15 13-22 13 6 6 8 18 0 24 11 1 19 10 22 20 3-10 11-19 22-20-8-6-6-18 0-24-7 0-17-5-22-13z'/%3E%3Cpath d='M80 0c2 4 4 8 8 10-4 2-6 6-8 10-2-4-4-8-8-10 4-2 6-6 8-10zm-60 65c2 3 3 6 6 8-3 2-4 5-6 8-2-3-3-6-6-8 3-2 4-5 6-8zm120 0c2 3 3 6 6 8-3 2-4 5-6 8-2-3-3-6-6-8 3-2 4-5 6-8z'/%3E%3C/g%3E%3C/svg%3E");
-      box-shadow: 0 0 45px rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow-x: hidden;
-    }
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  /* Warna dasar lilac pastel */
+  background-color: #f7effe;
+  /* Motif Etsa Pohon & Botani Klasik Bergaris Lilac Tegas */
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(228, 206, 245, 0.55) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%236b3b8c' stroke-width='1.25' stroke-opacity='0.48'%3E%3Cpath d='M90 180v-45c0-12 8-22 18-28 15-9 12-25 0-32-8-5-18-18-18-35V0'/%3E%3Cpath d='M90 135c-10-8-22-12-25-25-4-15 5-28 15-35'/%3E%3Cpath d='M108 107c12-4 22-15 20-30-2-12-15-20-25-22'/%3E%3Cpath d='M65 110c-15 2-25-6-30-20-4-12 2-25 15-30'/%3E%3Cpath d='M20 40c8-10 22-12 32-5 12 8 10 25 0 35-12 10-30 5-35-8-3-8 0-16 3-22z' fill='%238c5da8' fill-opacity='0.15'/%3E%3Cpath d='M160 40c-8-10-22-12-32-5-12 8-10 25 0 35 12 10 30 5 35-8 3-8 0-16-3-22z' fill='%238c5da8' fill-opacity='0.15'/%3E%3Cpath d='M90 40c-12-15-35-15-45 2s-5 35 15 45c18 8 35-5 40-20'/%3E%3Cpath d='M90 40c12-15 35-15 45 2s5 35-15 45c-18 8-35-5-40-20'/%3E%3Cpath d='M0 90h15M30 90h20M70 90h40M130 90h20M165 90h15M0 170h30M60 170h60M150 170h30' stroke-dasharray='2,3'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  box-shadow: 0 0 50px rgba(50, 20, 70, 0.45);
+  position: relative;
+  overflow-x: hidden;
+}
 
     /* Efek Kelopak Melayang */
     .petal {
